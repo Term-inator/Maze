@@ -1,9 +1,11 @@
 {
   "devDependencies": {
-    "vite": "^5.3.5"
+    "vite": "^5.3.5",
+    "vite-plugin-static-copy": "^1.0.6"
   },
   "dependencies": {
     "cannon-es": "^0.20.0",
+    "live-server": "^1.2.2",
     "three": "^0.167.0",
     "tinyqueue": "^3.0.0"
   }

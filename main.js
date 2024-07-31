@@ -44,7 +44,7 @@ class Lemon {
     const that = this;
 
     loader.load(
-      './models/Lemon.glb',  // 模型文件的路径
+      './public/models/Lemon.glb',  // 模型文件的路径
       function (gltf) {
         gltf.scene.scale.set(0.1, 0.1, 0.1);
         gltf.scene.traverse((child) => {
@@ -90,7 +90,7 @@ class Tree {
     const that = this;
 
     loader.load(
-      './models/Lowpoly_tree_sample.obj',  // 模型文件的路径
+      './public/models/Lowpoly_tree_sample.obj',  // 模型文件的路径
       function (object) {
         object.scale.set(0.5, 0.5, 0.5);
         object.traverse(function (child) {

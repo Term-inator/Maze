@@ -1,48 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Maze</title>
-    <link rel="stylesheet" href="style.css" type="text/css" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-    <style>
-      #instructions {
-        position: fixed;
-        left: 0;
-        top: 0;
 
-        width: 100%;
-        height: 100%;
+<head>
+  <meta charset="utf-8" />
+  <title>Maze</title>
+  <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: Monospace;
+    }
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
+    canvas {
+      outline: none;
+    }
 
-        background-color: rgba(0, 0, 0, 0.5);
-        color: #ffffff;
-        text-align: center;
+    /* more space for the Stats.js button name */
+    .dg .cr.function .property-name {
+      width: 100% !important;
+    }
 
-        cursor: pointer;
-      }
-      #instructions span {
-        font-size: 40px;
-      }
-    </style>
-	</head>
-	<body>
-    <div id="instructions">
-      <span>Click to play</span>
-      <span>Collect the Lemon in the Maze</span>
-      <br />
-      (W,A,S,D = Move, SPACE = Jump, MOUSE = Look)
-      <br />
-      (Left Axis = Move, Right Axis = Look, A = Jump)
-    </div>
-    <audio id="game-audio" src="./audio/Lost in the Maze.mp3"></audio>
-    <audio id="egg-audio" src="./audio/Celebrate Life.mp3"></audio>
-    <audio id="end-audio" src="./audio/We Rise Higher.mp3"></audio>
-    <div id="end"></div>
-		<script type="module" src="./main.js"></script>
-	</body>
+    .page-title {
+      position: fixed;
+      top: 0.75rem;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+    }
+
+    .page-title span {
+      color: #99ff4e;
+    }
+
+    .view-source-button {
+      display: block;
+
+      position: fixed;
+      bottom: 1rem;
+      right: 1rem;
+      z-index: 10;
+
+      padding: 0.75rem;
+      border-radius: 50%;
+
+      background-color: #fff;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .view-source-button:hover {
+      background-color: #f3f3f3;
+    }
+
+    .view-source-button img {
+      display: block;
+      width: 1.5rem;
+      opacity: 0.8;
+    }
+
+    #instructions {
+      position: fixed;
+      left: 0;
+      top: 0;
+
+      width: 100%;
+      height: 100%;
+
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      background-color: rgba(0, 0, 0, 0.5);
+      color: #ffffff;
+      text-align: center;
+
+      cursor: pointer;
+    }
+
+    #instructions span {
+      font-size: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="instructions">
+    <span>Click to play</span>
+    <span>Collect the Lemon in the Maze</span>
+    <br />
+    (W,A,S,D = Move, SPACE = Jump, MOUSE = Look)
+    <br />
+    (Left Axis = Move, Right Axis = Look, A = Jump)
+  </div>
+  <audio id="game-audio" src="./public/audio/Lost in the Maze.mp3"></audio>
+  <audio id="egg-audio" src="./public/ Life.mp3"></audio>
+  <audio id="end-audio" src="./public/ Rise Higher.mp3"></audio>
+  <div id="end"></div>
+  <script type="module" src="./main.js"></script>
+</body>
+
 </html>
