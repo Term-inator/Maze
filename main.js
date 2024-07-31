@@ -44,7 +44,7 @@ class Lemon {
     const that = this;
 
     loader.load(
-      './public/models/Lemon.glb',  // 模型文件的路径
+      '/models/Lemon.glb',  // 模型文件的路径
       function (gltf) {
         gltf.scene.scale.set(0.1, 0.1, 0.1);
         gltf.scene.traverse((child) => {
@@ -90,7 +90,7 @@ class Tree {
     const that = this;
 
     loader.load(
-      './public/models/Lowpoly_tree_sample.obj',  // 模型文件的路径
+      '/models/Lowpoly_tree_sample.obj',  // 模型文件的路径
       function (object) {
         object.scale.set(0.5, 0.5, 0.5);
         object.traverse(function (child) {
@@ -436,7 +436,7 @@ function finish() {
 }
 
 function showWinScreen() {
-  fetch('./end.html')
+  fetch('/html/end.html')
     .then(response => response.text())
     .then(text => {
       document.body.innerHTML = text;
@@ -454,7 +454,7 @@ function showWinScreen() {
 }
 
 function showEggScreen() {
-  fetch('./egg.html')
+  fetch('/html/egg.html')
     .then(response => response.text())
     .then(text => {
       document.body.innerHTML = text;
