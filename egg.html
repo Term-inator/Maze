@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Happy Birthday!</title>
+
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Concert+One|Pacifico");
+
+    body {
+      overflow: hidden;
+      height: 100vh;
+    }
+
+
+    body {
+      background: linear-gradient(to right, #e2b8f7, #d4bafa, #c7bcfb, #b9befb, #acbff9);
+      perspective: 1000px;
+      transform-style: preserve-3d;
+      font-family: "Pacifico", cursive;
+    }
+
+    h1 {
+      position: fixed;
+      text-align: center;
+      width: 100%;
+      top: 120px;
+      font-size: 90px;
+      background: -webkit-linear-gradient(0deg, #ceadfc 0%, #a3bbfb 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-family: 'Concert One', cursive;
+      font-weight: 400;
+      z-index: -1;
+      letter-spacing: 6px;
+    }
+
+    h2 {
+      position: fixed;
+      text-align: center;
+      width: 100%;
+      top: 50px;
+      font-size: 90px;
+      background: -webkit-linear-gradient(90deg, #e9e6ff 0%, white 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+
+    .cake {
+      position: relative;
+      top: 350px;
+      margin: auto;
+      width: 240px;
+      height: 80px;
+      background: #f9fdff;
+      border-radius: 100%;
+      transform: translateZ(100px);
+      box-shadow: 0px 4px 0px #f4f9fd, 0px 8px 0px #dba9ff, 0px 12px 0px #fec3b3, 0px 16px 0px #f7f6fb, 0px 20px 0px #f7f6fb, 0px 24px 0px #f7f6fb, 0px 28px 0px #f7f6fb, 0px 32px 0px #fea0bb, 0px 36px 0px #fea0bb, 0px 40px 0px #9cef9d, 0px 44px 0px #9cef9d, 0px 48px 0px #f7f6fb, 0px 52px 0px #f7f6fb, 0px 56px 0px #f7f6fb, 0px 60px 0px #f7f6fb, 0px 64px 0px #f7f6fb, 0px 68px 0px #dfa5fc, 0px 72px 0px #dfa5fc, 0px 76px 0px #fafffe, 0px 80px 0px #fafffe;
+    }
+
+    .candle {
+      position: relative;
+      height: 60px;
+      width: 12px;
+      top: 390px;
+      margin: auto;
+      background: linear-gradient(0deg, #b7f4a7 0%, white 100%);
+      border-radius: 4px;
+      transform: translateZ(120px);
+      z-index: 10;
+    }
+
+    #flame {
+      position: absolute;
+      z-index: 10;
+    }
+
+    .lit {
+      background: linear-gradient(to bottom, #FFF6D9, #FBC36C);
+      width: 15px;
+      height: 35px;
+      /*  Info on border radius. http://www.css3.info/preview/rounded-border/ */
+      border-top-left-radius: 10px 35px;
+      border-top-right-radius: 10px 35px;
+      border-bottom-right-radius: 10px 10px;
+      border-bottom-left-radius: 10px 10px;
+      top: -34px;
+      margin: auto;
+      /*   http://www.css3.info/preview/box-shadow/ */
+      box-shadow: 0 0 17px 7px rgba(251, 246, 190, 0.71);
+      transform-origin: bottom;
+      animation: flicker 1s ease-in-out alternate infinite;
+    }
+
+    @keyframes flicker {
+      0% {
+        transform: skewX(5deg);
+        box-shadow: 0 0 17px 10px rgba(251, 246, 190, 0.71);
+      }
+
+      25% {
+        transform: skewX(-5deg);
+        box-shadow: 0 0 17px 5px rgba(251, 246, 190, 0.71);
+      }
+
+      50% {
+        transform: skewX(10deg);
+        box-shadow: 0 0 17px 7px rgba(251, 246, 190, 0.71);
+      }
+
+      75% {
+        transform: skewX(-10deg);
+        box-shadow: 0 0 17px 5px rgba(251, 246, 190, 0.71);
+      }
+
+      100% {
+        transform: skewX(5deg);
+        box-shadow: 0 0 17px 10px rgba(251, 246, 190, 0.71);
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      display: block;
+      width: 30px;
+      height: 30px;
+      background-color: #f7e115;
+      border-top-left-radius: 60%;
+      border-bottom-right-radius: 60%;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      animation: fall 2s infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        top: -10px;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+
+    .clock-wrapper {
+      display: flex;
+      justify-content: center;
+      margin: 55vh 0 0;
+    }
+
+    .flip-clock {
+      display: flex;
+      font-size: 2em;
+      color: #ccc;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .flip-card {
+      background: #8687eb;
+      border-radius: 8px;
+      margin: 0 2px;
+      width: 80px;
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+      perspective: 1000px;
+      box-shadow: 4px 10px 16px 3px #a29cff;
+    }
+
+    .flip-card::before,
+    .flip-card::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 50%;
+      background: #8687eb;
+      z-index: 1;
+    }
+
+    .flip-card::before {
+      top: 0;
+      border-bottom: 2px solid #a29cff;
+    }
+
+    .flip-card::after {
+      bottom: 0;
+      border-top: 2px solid #a29cff;
+    }
+
+    .flip-card span {
+      position: absolute;
+      z-index: 2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      color: #fff;
+      backface-visibility: hidden;
+    }
+
+    @keyframes flip-top {
+      0% {
+        transform: rotateX(0deg);
+      }
+
+      100% {
+        transform: rotateX(-180deg);
+      }
+    }
+
+    @keyframes flip-bottom {
+      0% {
+        transform: rotateX(180deg);
+      }
+
+      100% {
+        transform: rotateX(0deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <h2>Happy Birthday!</h2>
+
+  <div class="candle">
+    <div id="flame" class="lit"></div>
+  </div>
+
+  <div class="cake"></div>
+
+  <div class="clock-wrapper">
+    <div class="flip-clock">
+      <div class="flip-card" id="year">
+        <span class="top">0000</span>
+        <span class="bottom">0000</span>
+      </div>
+      <div class="flip-card" id="month">
+        <span class="top">00</span>
+        <span class="bottom">00</span>
+      </div>
+      <div class="flip-card" id="day">
+        <span class="top">00</span>
+        <span class="bottom">00</span>
+      </div>
+      <div class="flip-card" id="hour">
+        <span class="top">00</span>
+        <span class="bottom">00</span>
+      </div>
+      <div class="flip-card" id="minute">
+        <span class="top">00</span>
+        <span class="bottom">00</span>
+      </div>
+      <div class="flip-card" id="second">
+        <span class="top">00</span>
+        <span class="bottom">00</span>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    // 生成彩纸效果
+    function generateConfetti() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5秒之间的动画时间
+      document.body.appendChild(confetti);
+
+      // 彩纸持续时间
+      setTimeout(() => {
+        confetti.remove();
+      }, 5000);
+    }
+
+    setInterval(generateConfetti, 500);
+
+    function updateFlip(elementId, newValue) {
+      const element = document.getElementById(elementId);
+      const top = element.querySelector('.top');
+      const bottom = element.querySelector('.bottom');
+      const currentValue = bottom.innerText;  // 获取当前值
+
+      if (currentValue !== newValue) {
+        // 当新值与当前值不同时，执行翻页动画
+        bottom.innerText = newValue;  // 更新底部值
+
+        // 创建新的顶部用于动画
+        const newTop = document.createElement('span');
+        newTop.className = 'top';
+        newTop.style.transform = 'rotateX(-180deg)';
+        newTop.innerText = newValue;
+
+        // 插入并执行动画
+        element.insertBefore(newTop, top);
+        setTimeout(() => {
+          newTop.style.transform = 'rotateX(0deg)';
+          newTop.style.animation = 'flip-top 0.6s forwards';
+          top.remove();
+        }, 10);
+      }
+    }
+
+    function updateDate() {
+      const now = new Date();
+      // const year = now.getFullYear().toString();
+      // const month = (now.getMonth() + 1).toString().padStart(2, '0');
+      // const day = now.getDate().toString().padStart(2, '0');
+
+      const year = '2024';
+      const month = '08';
+      const day = '02';
+      const hour = now.getHours().toString().padStart(2, '0');
+      const minute = now.getMinutes().toString().padStart(2, '0');
+      const second = now.getSeconds().toString().padStart(2, '0');
+
+      updateFlip('year', year);
+      updateFlip('month', month);
+      updateFlip('day', day);
+      updateFlip('hour', hour);
+      updateFlip('minute', minute);
+      updateFlip('second', second);
+    }
+
+    setInterval(updateDate, 1000);
+  </script>
+</body>
+
+
+</html>

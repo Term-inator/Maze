@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>You win!</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #779073;
+      color: #f7e115;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
+      margin: 0;
+    }
+
+    .celebration {
+      text-align: center;
+      animation: zoomIn 1s both;
+    }
+
+    h1 {
+      font-size: 6rem;
+      font-family: 'Pacifico', cursive;
+    }
+
+    p {
+      font-size: 3rem;
+      font-family: 'Concert One', cursive;
+    }
+
+    @keyframes zoomIn {
+      from {
+        transform: scale(0);
+        opacity: 0;
+      }
+
+      to {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .confetti {
+      position: absolute;
+      display: block;
+      width: 15px;
+      height: 15px;
+      background-color: #8bf174;
+      animation: fall 2s infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        top: -10px;
+      }
+
+      100% {
+        top: 100vh;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="celebration">
+    <h1>You win!</h1>
+    <p>Thanks for playing!</p>
+  </div>
+  <script>
+    // 生成彩纸效果
+    function generateConfetti() {
+      const confetti = document.createElement('div');
+      confetti.classList.add('confetti');
+      confetti.style.left = Math.random() * window.innerWidth + 'px';
+      confetti.style.animationDuration = Math.random() * 3 + 2 + 's'; // 2-5秒之间的动画时间
+      document.body.appendChild(confetti);
+
+      // 彩纸持续时间
+      setTimeout(() => {
+        confetti.remove();
+      }, 5000);
+    }
+
+    // 每100毫秒生成一个彩纸
+    setInterval(generateConfetti, 100);
+  </script>
+</body>
+
+</html>

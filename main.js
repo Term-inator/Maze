@@ -21,6 +21,13 @@ let sphereBody;
 let physicsMaterial;
 let wallSize = 3;
 let lemon = null;
+let animationId;
+let gameAudio = document.querySelector('#game-audio');
+gameAudio.loop = true;
+let eggAudio = document.querySelector('#egg-audio');
+eggAudio.loop = true;
+let endAudio = document.querySelector('#end-audio');
+endAudio.loop = true;
 
 
 class Lemon {
@@ -75,6 +82,17 @@ initThree();
 initCannon();
 initPointerLock();
 animate();
+
+window.addEventListener("gamepadconnected", function (e) {
+  console.log(
+    "控制器已连接于 %d 位：%s. %d 个按钮，%d 个坐标方向。",
+    e.gamepad.index,
+    e.gamepad.id,
+    e.gamepad.buttons.length,
+    e.gamepad.axes.length,
+  );
+});
+
 
 function initThree() {
   // Camera
@@ -191,7 +209,7 @@ function initCannon() {
         boxBody.addShape(boxShape);
         boxBody.position.set((j - game.maze.width / 2) * wallSize, wallHeight / 2, (i - game.maze.height / 2) * wallSize);
         world.addBody(boxBody);
-  
+
         const boxGeometry = new THREE.BoxGeometry(wallSize, wallHeight, wallSize);
         const boxMaterial = new THREE.MeshLambertMaterial({ color: 0x00ff00 });
         const boxMesh = new THREE.Mesh(boxGeometry, boxMaterial);
@@ -227,29 +245,83 @@ function initPointerLock() {
   });
 }
 
+
 function animate() {
-  requestAnimationFrame(animate);
+  animationId = requestAnimationFrame(animate);
 
   const time = performance.now() / 1000;
   const dt = time - lastCallTime;
   lastCallTime = time;
 
+  const gamepads = navigator.getGamepads(); // 获取所有已连接的手柄
+
   if (controls.enabled) {
     world.step(timeStep, dt);
+
+
+    if (gameAudio.paused) {
+      gameAudio.play();
+    }
 
     if (lemon && sphereBody.position.distanceTo(new THREE.Vector3(lemon.position.x, lemon.position.y, lemon.position.z)) < 1) {
       scene.remove(lemon.model);
       lemon = null;
       console.log('You win!');
+      finish();
+      showEndScreen();
+      return
     }
 
     if (lemon) {
       lemon.animate();
     }
 
-    
+    if (gamepads[0]) {
+      const gp = gamepads[0]; // 假设我们只关心第一个手柄
+
+      if (gp.axes[0] < -0.5) {
+        controls.moveLeft = true;
+      } else {
+        controls.moveLeft = false;
+      }
+
+      if (gp.axes[0] > 0.5) {
+        controls.moveRight = true;
+      } else {
+        controls.moveRight = false;
+      }
+
+      if (gp.axes[1] < -0.5) {
+        controls.moveForward = true;
+      } else {
+        controls.moveForward = false;
+      }
+
+      if (gp.axes[1] > 0.5) {
+        controls.moveBackward = true;
+      } else {
+        controls.moveBackward = false;
+      }
+
+      // axes[2] and axes[3] are the right stick, rotate the camera
+      if (Math.abs(gp.axes[2]) > 0.1 || Math.abs(gp.axes[3]) > 0.1) {
+        controls.yawObject.rotation.y -= gp.axes[2] * 0.02;
+        controls.pitchObject.rotation.x -= gp.axes[3] * 0.05;
+      }
+
+      if (gp.buttons[0].pressed) {
+        if (controls.canJump) {
+          controls.velocity.y = controls.jumpVelocity
+        }
+        controls.canJump = false
+      }
+    }
+
     // Update visible maze blocks
     renderMazeBasedOnDistance();
+  }
+  else {
+    gameAudio.pause();
   }
 
   controls.update(dt);
@@ -269,3 +341,80 @@ function renderMazeBasedOnDistance() {
   });
 }
 
+function finish() {
+  cancelAnimationFrame(animationId);
+
+  while (scene.children.length > 0) {
+    let child = scene.children[0];
+    scene.remove(child);
+    // 如果有几何体和材料，确保也释放它们
+    if (child.geometry) {
+      child.geometry.dispose();
+    }
+    if (child.material) {
+      child.material.dispose();
+    }
+  }
+
+  while (world.bodies.length > 0) {
+    world.removeBody(world.bodies[0]);
+  }
+
+  window.removeEventListener('resize', onWindowResize);
+
+  const canvasElement = renderer.domElement;
+  canvasElement.parentNode.removeChild(canvasElement);
+
+  scene = null;
+  camera = null;
+  renderer = null;
+  world = null;
+  controls.unlock()
+  controls.dispose();
+  controls = null;
+
+  stats.dom.parentNode.removeChild(stats.dom);
+  stats = null;
+  material = null;
+  sphereShape = null;
+  sphereBody = null;
+  physicsMaterial = null;
+  lemon = null;
+  animationId = null;
+
+  gameAudio.pause();
+}
+
+function showEndScreen() {
+  let endFile = './end.html';
+  let audio = endAudio;
+  const today = new Date();
+  if (today.getFullYear() === 2024 && today.getMonth() === 7 && today.getDate() === 2) {
+    endFile = './egg.html'
+    audio = eggAudio
+  }
+  else {
+    audio = endAudio
+  }
+  document.addEventListener('click', (event) => {
+    audio.play();
+  }, { once: true });
+
+  fetch(endFile)
+    .then(response => response.text())
+    .then(text => {
+      document.body.innerHTML = text;
+      const scripts = document.querySelectorAll('script')
+      scripts.forEach(script => {
+        eval(script.innerText)
+      })
+    })
+    .then(() => {
+      alert("Click anywhere to play audio");
+    });
+}
+
+function backDoor() {
+  finish();
+  showEndScreen();
+}
