@@ -1,6 +1,7 @@
 import * as CANNON from 'cannon-es';
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import Stats from 'three/examples/jsm/libs/stats.module.js';
 import { PointerLockControlsCannon } from './PointerLockControlsCannon.js';
 import { Game, GameBlockType } from './game.js';
@@ -21,6 +22,7 @@ let sphereBody;
 let physicsMaterial;
 let wallSize = 3;
 let lemon = null;
+let tree = null;
 let animationId;
 let gameAudio = document.querySelector('#game-audio');
 gameAudio.loop = true;
@@ -73,6 +75,47 @@ class Lemon {
     this.model.rotation.y += 0.01;  // 绕 y 轴旋转模型
     this.model.position.y = this.position.y + Math.sin(this.floatTime) * 0.2;  // 模型上下浮动
     this.floatTime += 0.01
+  }
+}
+
+
+class Tree {
+  constructor() {
+    this.model = null;
+    this.position = new THREE.Vector3();
+  }
+
+  load() {
+    const loader = new OBJLoader();
+    const that = this;
+
+    loader.load(
+      './models/Lowpoly_tree_sample.obj',  // 模型文件的路径
+      function (object) {
+        object.scale.set(0.5, 0.5, 0.5);
+        object.traverse(function (child) {
+          if (child instanceof THREE.Mesh) {
+            child.material = new THREE.MeshLambertMaterial({ color: 0xffffff });
+          }
+      });
+        that.model = object;
+        scene.add(object);
+      },
+      function (xhr) {
+        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+      },
+      function (error) {
+        console.log(error);
+      }
+    );
+  }
+
+  setPositon(x, y, z) {
+    this.position.set(x, y, z);
+  }
+
+  animate() {
+    this.model.position.copy(this.position);
   }
 }
 
@@ -186,7 +229,6 @@ function initCannon() {
   sphereShape = new CANNON.Sphere(radius);
   sphereBody = new CANNON.Body({ mass: 5, material: physicsMaterial });
   sphereBody.addShape(sphereShape);
-  sphereBody.position.set(0, 3, 0);
   sphereBody.linearDamping = 0.9;
 
   world.addBody(sphereBody);
@@ -221,6 +263,14 @@ function initCannon() {
         lemon = new Lemon();
         lemon.load();
         lemon.setPositon((j - game.maze.width / 2) * wallSize, wallHeight, (i - game.maze.height / 2) * wallSize);
+      }
+      else if (cell === GameBlockType.TREE) {
+        tree = new Tree();
+        tree.load();
+        tree.setPositon((j - game.maze.width / 2) * wallSize, wallHeight, (i - game.maze.height / 2) * wallSize);
+      }
+      else if (cell === GameBlockType.START) {
+        sphereBody.position.set((j - game.maze.width / 2) * wallSize, wallHeight, (i - game.maze.height / 2) * wallSize);
       }
     });
   });
@@ -305,8 +355,8 @@ function animate() {
 
       // axes[2] and axes[3] are the right stick, rotate the camera
       if (Math.abs(gp.axes[2]) > 0.1 || Math.abs(gp.axes[3]) > 0.1) {
-        controls.yawObject.rotation.y -= gp.axes[2] * 0.02;
-        controls.pitchObject.rotation.x -= gp.axes[3] * 0.05;
+        controls.yawObject.rotation.y -= gp.axes[2] * 0.05;
+        controls.pitchObject.rotation.x -= gp.axes[3] * 0.03;
       }
 
       if (gp.buttons[0].pressed) {
@@ -330,7 +380,7 @@ function animate() {
 }
 
 // 玩家视野范围
-const viewDistance = 10 * 4;
+const viewDistance = 10 * 3;
 
 function renderMazeBasedOnDistance() {
   scene.children.forEach(child => {
@@ -410,7 +460,7 @@ function showEndScreen() {
       })
     })
     .then(() => {
-      alert("Click anywhere to play audio");
+      alert("点击任意位置播放音乐");
     });
 }
 
