@@ -435,22 +435,8 @@ function finish() {
   gameAudio.pause();
 }
 
-function showEndScreen() {
-  let endFile = './end.html';
-  let audio = endAudio;
-  const today = new Date();
-  if (today.getFullYear() === 2024 && today.getMonth() === 7 && today.getDate() === 2) {
-    endFile = './egg.html'
-    audio = eggAudio
-  }
-  else {
-    audio = endAudio
-  }
-  document.addEventListener('click', (event) => {
-    audio.play();
-  }, { once: true });
-
-  fetch(endFile)
+function showWinScreen() {
+  fetch('./end.html')
     .then(response => response.text())
     .then(text => {
       document.body.innerHTML = text;
@@ -462,9 +448,47 @@ function showEndScreen() {
     .then(() => {
       alert("点击任意位置播放音乐");
     });
+  document.addEventListener('click', (event) => {
+    endAudio.play();
+  }, { once: true });
 }
 
-function backDoor() {
-  finish();
-  showEndScreen();
+function showEggScreen() {
+  fetch('./egg.html')
+    .then(response => response.text())
+    .then(text => {
+      document.body.innerHTML = text;
+      const scripts = document.querySelectorAll('script')
+      scripts.forEach(script => {
+        eval(script.innerText)
+      })
+    })
+    .then(() => {
+      alert("点击任意位置播放音乐");
+    });
+  document.addEventListener('click', (event) => {
+    eggAudio.play();
+  }, { once: true });
 }
+
+function showEndScreen() {
+  const today = new Date();
+  if (today.getFullYear() === 2024 && today.getMonth() === 7 && today.getDate() === 2) {
+    showEggScreen();
+  }
+  else {
+    showWinScreen();
+  }
+}
+
+function backDoor(type) {
+  finish();
+  if (type === 0) {
+    showWinScreen();
+  }
+  else if (type === 1) {
+    showEggScreen();
+  }
+}
+
+window.backDoor = backDoor;
