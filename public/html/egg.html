@@ -11,10 +11,7 @@
     body {
       overflow: hidden;
       height: 100vh;
-    }
-
-
-    body {
+      margin: 0;
       background: linear-gradient(to right, #e2b8f7, #d4bafa, #c7bcfb, #b9befb, #acbff9);
       perspective: 1000px;
       transform-style: preserve-3d;
@@ -223,6 +220,39 @@
         transform: rotateX(0deg);
       }
     }
+
+    .mask {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      display: none;
+      /* 初始状态隐藏 */
+      justify-content: center;
+      /* 内容居中 */
+      align-items: center;
+      /* 内容居中 */
+    }
+
+    .mask.active {
+      display: flex;
+      /* 显示蒙版并使内容居中 */
+    }
+
+    .mask-content {
+      color: white;
+      text-align: center;
+      padding: 20px;
+      border-radius: 10px;
+      font-size: 24px;
+    }
+
+    .mask-content p {
+      margin: 10px 0;
+    }
   </style>
 </head>
 
@@ -264,7 +294,12 @@
       </div>
     </div>
   </div>
-
+  <div id="mask" class="mask">
+    <div class="mask-content">
+      <p>点击任意位置继续</p>
+    </div>
+  </div>
+  <audio id="egg-audio" src="../audio/Celebrate Life.mp3"></audio>
 
   <script>
     // 生成彩纸效果
@@ -331,6 +366,32 @@
     }
 
     setInterval(updateDate, 1000);
+
+    const mask = document.getElementById('mask');
+    const audio = document.getElementById('egg-audio');
+    audio.loop = true;
+
+    // 显示蒙版
+    mask.classList.add('active');
+
+
+    const hideMask = () => {
+      mask.classList.remove('active');
+      audio.play();
+    };
+
+    // 点击蒙版时隐藏它
+    mask.addEventListener('click', () => {
+      hideMask();
+    });
+
+
+    // 点击页面的任意位置隐藏蒙版
+    document.addEventListener('click', (event) => {
+      if (mask.classList.contains('active')) {
+        hideMask();
+      }
+    });
   </script>
 </body>
 

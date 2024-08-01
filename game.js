@@ -22,7 +22,7 @@ export class Game {
   }
 
   init() {
-    this.mazeSize = 71
+    this.mazeSize = 21
     this.maze = new KruskalMaze(this.mazeSize, this.mazeSize)
     
     this.maze.generate()

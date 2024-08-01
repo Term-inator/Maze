@@ -26,10 +26,6 @@ let tree = null;
 let animationId;
 let gameAudio = document.querySelector('#game-audio');
 gameAudio.loop = true;
-let eggAudio = document.querySelector('#egg-audio');
-eggAudio.loop = true;
-let endAudio = document.querySelector('#end-audio');
-endAudio.loop = true;
 
 
 class Lemon {
@@ -445,12 +441,6 @@ function showWinScreen() {
         eval(script.innerText)
       })
     })
-    .then(() => {
-      alert("点击任意位置播放音乐");
-    });
-  document.addEventListener('click', (event) => {
-    endAudio.play();
-  }, { once: true });
 }
 
 function showEggScreen() {
@@ -463,17 +453,12 @@ function showEggScreen() {
         eval(script.innerText)
       })
     })
-    .then(() => {
-      alert("点击任意位置播放音乐");
-    });
-  document.addEventListener('click', (event) => {
-    eggAudio.play();
-  }, { once: true });
 }
 
 function showEndScreen() {
   const today = new Date();
-  if (today.getFullYear() === 2024 && today.getMonth() === 7 && today.getDate() === 2) {
+  const gamepads = navigator.getGamepads();
+  if (gamepads[0] && today.getFullYear() === 2024 && today.getMonth() === 7 && today.getDate() === 2) {
     showEggScreen();
   }
   else {
@@ -481,7 +466,7 @@ function showEndScreen() {
   }
 }
 
-function backDoor(type) {
+function backdoor(type) {
   finish();
   if (type === 0) {
     showWinScreen();
@@ -491,4 +476,4 @@ function backDoor(type) {
   }
 }
 
-window.backDoor = backDoor;
+window.backdoor = backdoor;
